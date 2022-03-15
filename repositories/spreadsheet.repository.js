@@ -10,7 +10,7 @@ const sheets = google.sheets('v4');
 // async function execAPI(spreadsheetId, range) {
 export const execAPI = async (spreadsheetId, range) => {
   const auth = await google.auth.getClient({
-    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    // keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
