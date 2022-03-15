@@ -23,7 +23,8 @@ steps:
       - "--platform"
       - "managed"
       - "--region"
-      - "us-central1"
+      - "${_REGION}"
+      - "--allow-unauthenticated"
 substitutions:
   _REGION: asia-northeast1
   _SERVICE_NAME: slack-automator
