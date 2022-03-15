@@ -1,18 +1,18 @@
 // import { findAll, findToday, } from '../repositories/spreadsheet.repository.js';
 import { WebClient, } from '@slack/web-api';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 // import cron from 'node-cron';
 import { getUnixTime, format } from 'date-fns';
 
-dotenv.config();
+// dotenv.config();
 
 // メッセージ即時投稿する関数
-const postToSlackNow = async (token, channel, text) => {
-  const client = new WebClient(token);
-  const response = await client.chat.postMessage({ channel, text });
-  console.log(response.ok);
-  return response;
-}
+// const postToSlackNow = async (token, channel, text) => {
+//   const client = new WebClient(token);
+//   const response = await client.chat.postMessage({ channel, text });
+//   console.log(response.ok);
+//   return response;
+// }
 
 // メッセージ予約投稿する関数
 const postToSlackScheduled = async (token, post_at, channel, text) => {
@@ -35,9 +35,9 @@ const getTodaySchedules = (schedules) => {
 }
 
 // スケジュールを入力すると本日のものだけ送信する関数
-const scheduleAll = (token, schedules) => {
+const scheduleAll = (schedules) => {
   const todaysSchedules = getTodaySchedules(schedules);
-  todaysSchedules.forEach((x) => postToSlackScheduled(token, getUnixTime(new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)), x.channel, x.text));
+  todaysSchedules.forEach((x) => postToSlackScheduled(x.token, getUnixTime(new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)), x.channel, x.text));
   return
 }
 
@@ -45,8 +45,6 @@ const scheduleAll = (token, schedules) => {
 export const postNow = async () => {
   try {
     const token = process.env.SLACK_API_TOKEN;
-    // const todoData = await findAll();
-    // const text = todoData.map((x) => `${x.deadline}\t${x.todo}`).join('\n');
     return postToSlackNow(token, '#test', 'post now');
   } catch (e) {
     throw Error('Error while posting message');
@@ -56,9 +54,10 @@ export const postNow = async () => {
 // 予約投稿処理
 export const postScheduled = async () => {
   try {
-    const token = process.env.SLACK_API_TOKEN;
+    // const token = process.env.SLACK_API_TOKEN;
     const schedules = [
       {
+        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
         year: 2021,
         month: 12,
         day: 8,
@@ -69,6 +68,7 @@ export const postScheduled = async () => {
         text: '<!channel>\nhogehoge',
       },
       {
+        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
         year: 2021,
         month: 12,
         day: 8,
@@ -79,6 +79,7 @@ export const postScheduled = async () => {
         text: 'fuga',
       },
       {
+        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
         year: 2021,
         month: 12,
         day: 8,
@@ -89,7 +90,7 @@ export const postScheduled = async () => {
         text: 'piyo',
       },
     ];
-    return scheduleAll(token, schedules);
+    return scheduleAll(schedules);
   } catch (e) {
     throw Error('Error while posting message');
   }
@@ -99,14 +100,4 @@ export const postScheduled = async () => {
 
 // cron.schedule('30 19 13 * * *', () => postAllTodoData());
 // cron.schedule('40 19 13 * * *', () => postTodayTodoData());
-
-
-// 以下slack自動投稿テスト
-
-
-
-
-// 時間確認
-// schedules.forEach((x) => console.log(getUnixTime(new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)), x.text));
-
 
