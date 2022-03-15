@@ -1,18 +1,18 @@
 // import { findAll, findToday, } from '../repositories/spreadsheet.repository.js';
 import { WebClient, } from '@slack/web-api';
-// import dotenv from 'dotenv';
+import dotenv from 'dotenv';
 // import cron from 'node-cron';
 import { getUnixTime, format } from 'date-fns';
 
-// dotenv.config();
+dotenv.config();
 
 // メッセージ即時投稿する関数
-// const postToSlackNow = async (token, channel, text) => {
-//   const client = new WebClient(token);
-//   const response = await client.chat.postMessage({ channel, text });
-//   console.log(response.ok);
-//   return response;
-// }
+const postToSlackNow = async (token, channel, text) => {
+  const client = new WebClient(token);
+  const response = await client.chat.postMessage({ channel, text });
+  console.log(response.ok);
+  return response;
+}
 
 // メッセージ予約投稿する関数
 const postToSlackScheduled = async (token, post_at, channel, text) => {
@@ -47,7 +47,7 @@ export const postNow = async () => {
     const token = process.env.SLACK_API_TOKEN;
     return postToSlackNow(token, '#test', 'post now');
   } catch (e) {
-    throw Error('Error while posting message');
+    throw Error(e);
   }
 };
 
@@ -57,7 +57,7 @@ export const postScheduled = async () => {
     // const token = process.env.SLACK_API_TOKEN;
     const schedules = [
       {
-        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
+        token: process.env.SLACK_API_TOKEN,
         year: 2021,
         month: 12,
         day: 8,
@@ -68,7 +68,7 @@ export const postScheduled = async () => {
         text: '<!channel>\nhogehoge',
       },
       {
-        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
+        token: process.env.SLACK_API_TOKEN,
         year: 2021,
         month: 12,
         day: 8,
@@ -79,7 +79,7 @@ export const postScheduled = async () => {
         text: 'fuga',
       },
       {
-        token: 'xoxb-152439565568-1502484893776-odAVEHS6NgP9TENb5B38SSxo',
+        token: process.env.SLACK_API_TOKEN,
         year: 2021,
         month: 12,
         day: 8,
