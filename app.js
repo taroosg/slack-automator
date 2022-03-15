@@ -4,12 +4,12 @@ import { slackRouter } from './routes/slack.route.js';
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-const port = 3000;
+const port = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
   res.json({
     uri: '/',
-    message: 'Hello Node.js!',
+    message: 'Hello Cloud Run!',
   });
 });
 
