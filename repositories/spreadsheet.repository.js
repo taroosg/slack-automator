@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import { google, } from 'googleapis';
 
 const sheets = google.sheets('v4');
@@ -7,7 +10,7 @@ const sheets = google.sheets('v4');
 // async function execAPI(spreadsheetId, range) {
 export const execAPI = async (spreadsheetId, range) => {
   const auth = await google.auth.getClient({
-    keyFile: 'credentials.json',
+    keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
     scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
   });
 
