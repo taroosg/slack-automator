@@ -3,6 +3,7 @@ import { WebClient, } from '@slack/web-api';
 import dotenv from 'dotenv';
 // import cron from 'node-cron';
 import { getUnixTime, format } from 'date-fns';
+import { formatToTimeZone } from 'date-fns-timezone';
 import { getSheetData } from '../repositories/spreadsheet.repository.js';
 
 dotenv.config();
@@ -31,14 +32,18 @@ const postToSlackScheduled = async (token, post_at, channel, text) => {
 
 // スケジュールを入力して本日のものだけ出力する関数
 const getTodaySchedules = (schedules) => {
-  const todayObject = Object.fromEntries(format(new Date(), 'yyyy-M-d').split('-').map((x, i) => [['year', 'month', 'day'][i], Number(x)]));
+  const todayObject = Object.fromEntries(formatToTimeZone(new Date(), 'YYYY-M-D', { timeZone: 'Asia/Tokyo' }).split('-').map((x, i) => [['year', 'month', 'day'][i], Number(x)]));
   return schedules.filter((x) => [x.year === todayObject.year, x.month === todayObject.month, x.day === todayObject.day].every(x => x));
 }
 
 // スケジュールを入力すると本日のものだけ送信する関数
 const scheduleAll = (schedules) => {
   const todaysSchedules = getTodaySchedules(schedules);
-  todaysSchedules.forEach((x) => postToSlackScheduled(x.token, getUnixTime(new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)), x.channel, x.text));
+  // console.log(todaysSchedules.map((x) => getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)))));
+  // console.log(todaysSchedules.map((x) => getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)).toISOString)));
+  // console.log(todaysSchedules.map((x) => ((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)))));
+  // console.log(todaysSchedules.map((x) => getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)).toISOString())));
+  todaysSchedules.forEach((x) => postToSlackScheduled(x.token, getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))), x.channel, x.text));
   return
 }
 

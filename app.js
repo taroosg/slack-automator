@@ -2,6 +2,7 @@ import express from 'express';
 import { slackRouter } from './routes/slack.route.js';
 import { execAPI } from './repositories/spreadsheet.repository.js';
 import { getUnixTime, format } from 'date-fns';
+import { formatToTimeZone } from 'date-fns-timezone';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -14,7 +15,8 @@ app.get('/', async (req, res) => {
   res.json({
     uri: '/',
     message: 'Hello Cloud Run!',
-    data: format(new Date(), 'yyyy-M-d-hh-mm-ss'),
+    // data: format(new Date(), 'yyyy-M-d-hh-mm-ss'),
+    data: formatToTimeZone(new Date(), 'YYYY-M-D-hh-mm-ss', { timeZone: 'Asia/Tokyo' }),
   });
 });
 
