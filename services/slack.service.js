@@ -33,9 +33,9 @@ const postToSlackScheduled = async (token, post_at, channel, text) => {
 // スケジュールを入力して本日のものだけ出力する関数
 const getTodaySchedules = (schedules) => {
   const todayObject = Object.fromEntries(format(process.env.DEPLOY === 'production' ? addHours(new Date(), 9) : new Date(), 'yyyy-M-d').split('-').map((x, i) => [['year', 'month', 'day'][i], Number(x)]));
-  // const todayObject2 = Object.fromEntries(format(addHours(new Date(), 9), 'yyyy-M-d-HH').split('-').map((x, i) => [['year', 'month', 'day'][i], Number(x)]));
+  const todayObject2 = Object.fromEntries(format(addHours(new Date(), 9), 'yyyy-M-d-HH').split('-').map((x, i) => [['year', 'month', 'day'][i], Number(x)]));
   // console.log(todayObject);
-  // console.log(todayObject2);
+  console.log(todayObject2);
   return schedules.filter((x) => [x.year === todayObject.year, x.month === todayObject.month, x.day === todayObject.day].every(x => x));
 }
 
