@@ -42,7 +42,8 @@ const getTodaySchedules = (schedules) => {
 // スケジュールを入力すると本日のものだけ送信する関数
 const scheduleAll = (schedules) => {
   const todaysSchedules = getTodaySchedules(schedules);
-  todaysSchedules.forEach((x) => postToSlackScheduled(x.token, process.env.DEPLOY === 'production' ? getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))) - (60 * 60 * 9) : getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))), x.channel, x.text));
+  console.log(todaysSchedules);
+  // todaysSchedules.forEach((x) => postToSlackScheduled(x.token, process.env.DEPLOY === 'production' ? getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))) - (60 * 60 * 9) : getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))), x.channel, x.text));
   return
 }
 
