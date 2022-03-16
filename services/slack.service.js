@@ -3,6 +3,7 @@ import { WebClient, } from '@slack/web-api';
 import dotenv from 'dotenv';
 // import cron from 'node-cron';
 import { getUnixTime, format } from 'date-fns';
+import { getSheetData } from '../repositories/spreadsheet.repository.js';
 
 dotenv.config();
 
@@ -54,42 +55,46 @@ export const postNow = async () => {
 // 予約投稿処理
 export const postScheduled = async () => {
   try {
+
+    const schedules = await getSheetData();
+    console.log(schedules);
+
     // const token = process.env.SLACK_API_TOKEN;
-    const schedules = [
-      {
-        token: process.env.SLACK_API_TOKEN,
-        year: 2021,
-        month: 12,
-        day: 8,
-        hour: 17,
-        minute: 56,
-        seconds: 0,
-        channel: '#ファントムブラッド',
-        text: '<!channel>\nhogehoge',
-      },
-      {
-        token: process.env.SLACK_API_TOKEN,
-        year: 2021,
-        month: 12,
-        day: 8,
-        hour: 17,
-        minute: 56,
-        seconds: 15,
-        channel: '#スターダストクルセイダース',
-        text: 'fuga',
-      },
-      {
-        token: process.env.SLACK_API_TOKEN,
-        year: 2021,
-        month: 12,
-        day: 8,
-        hour: 17,
-        minute: 56,
-        seconds: 30,
-        channel: '#黄金の風',
-        text: 'piyo',
-      },
-    ];
+    // const schedules = [
+    //   {
+    //     token: process.env.SLACK_API_TOKEN,
+    //     year: 2022,
+    //     month: 3,
+    //     day: 16,
+    //     hour: 11,
+    //     minute: 54,
+    //     seconds: 30,
+    //     channel: '#ファントムブラッド',
+    //     text: '<!channel>\nhogehoge\n* hoge\n* fuga',
+    //   },
+    //   {
+    //     token: process.env.SLACK_API_TOKEN,
+    //     year: 2022,
+    //     month: 3,
+    //     day: 17,
+    //     hour: 10,
+    //     minute: 23,
+    //     seconds: 15,
+    //     channel: '#スターダストクルセイダース',
+    //     text: 'fuga',
+    //   },
+    //   {
+    //     token: process.env.SLACK_API_TOKEN,
+    //     year: 2022,
+    //     month: 3,
+    //     day: 17,
+    //     hour: 10,
+    //     minute: 23,
+    //     seconds: 30,
+    //     channel: '#黄金の風',
+    //     text: 'piyo',
+    //   },
+    // ];
     return scheduleAll(schedules);
   } catch (e) {
     throw Error('Error while posting message');

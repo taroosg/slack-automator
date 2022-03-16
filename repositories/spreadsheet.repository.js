@@ -5,9 +5,6 @@ import { google, } from 'googleapis';
 
 const sheets = google.sheets('v4');
 
-// execAPI('1tEP9BXmtOSLIEblc_rgKYLLmh6okrN2_q0jsWyVcJ1g', 'data!A1:E10');
-
-// async function execAPI(spreadsheetId, range) {
 export const execAPI = async (spreadsheetId, range) => {
   const auth = await google.auth.getClient({
     // keyFile: process.env.GOOGLE_APPLICATION_CREDENTIALS,
@@ -21,14 +18,18 @@ export const execAPI = async (spreadsheetId, range) => {
   };
 
   const result = await sheets.spreadsheets.values.get(apiOptions);
-  console.log(result);
-  return await result.data.values;
+  return result.data.values;
 
-
-  // sheets.spreadsheets.values.get(apiOptions, async (err, res) => {
-  //   console.log(res.data.values);
-  //   return await res.data.values;
-  // });
 }
 
+export const createFantasticData = (rawData) =>
+  rawData
+    .filter((x, i) => i !== 0)
+    .map((x, i) => Object.fromEntries(x.map((x, i) => [rawData[0][i], ['year', 'month', 'day', 'hour', 'minute', 'seconds'].includes(rawData[0][i]) ? Number(x) : x])));
 
+
+export const getSheetData = async () => {
+  return createFantasticData(await execAPI(process.env.SPREADSHEET_ID, 'data'));
+}
+
+// console.log(await getSheetData());

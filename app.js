@@ -1,6 +1,7 @@
 import express from 'express';
 import { slackRouter } from './routes/slack.route.js';
-import { execAPI } from './repositories/spreadsheet.repository.js'
+import { execAPI } from './repositories/spreadsheet.repository.js';
+import { getUnixTime, format } from 'date-fns';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -13,7 +14,7 @@ app.get('/', async (req, res) => {
   res.json({
     uri: '/',
     message: 'Hello Cloud Run!',
-    data: await execAPI(process.env.SPREADSHEET_ID, 'data!A1:E10'),
+    data: format(new Date(), 'yyyy-M-d-hh-mm-ss'),
   });
 });
 
