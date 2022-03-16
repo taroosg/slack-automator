@@ -43,7 +43,7 @@ const getTodaySchedules = (schedules) => {
 const scheduleAll = (schedules) => {
   const todaysSchedules = getTodaySchedules(schedules);
   console.log(todaysSchedules.map((x) => process.env.DEPLOY === 'production' ? getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))) - (60 * 60 * 9) : getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds)))));
-  // todaysSchedules.forEach((x) => postToSlackScheduled(x.token, process.env.DEPLOY === 'production' ? getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))) - (60 * 60 * 9) : getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))), x.channel, x.text));
+  todaysSchedules.forEach((x) => postToSlackScheduled(x.token, process.env.DEPLOY === 'production' ? getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))) - (60 * 60 * 9) : getUnixTime((new Date(x.year, x.month - 1, x.day, x.hour, x.minute, x.seconds))), x.channel, x.text));
   return
 }
 
