@@ -22,14 +22,15 @@ export const execAPI = async (spreadsheetId, range) => {
 
 }
 
-export const createFantasticData = (rawData) =>
-  rawData
-    .filter((x, i) => i !== 0)
-    .map((x, i) => Object.fromEntries(x.map((x, i) => [rawData[0][i], ['year', 'month', 'day', 'hour', 'minute', 'seconds'].includes(rawData[0][i]) ? Number(x) : x])));
+// 空文字含む行を判定
+const hasEmpty = (array) => array.every((x) => x != '');
 
+// カラム数が足りない行を判定
+const hasColumn = (array, initialArray) => array.length === initialArray.length;
 
-export const getSheetData = async () => {
-  return createFantasticData(await execAPI(process.env.SPREADSHEET_ID, 'data'));
-}
+// 必要な行のみ抽出して整形
+export const createFantasticData = (rawData) => rawData
+  .filter((x, i, arr) => i !== 0 && hasEmpty(x) && hasColumn(x, arr[0]))
+  .map((x, i) => Object.fromEntries(x.map((x, i) => [rawData[0][i], ['year', 'month', 'day', 'hour', 'minute', 'seconds'].includes(rawData[0][i]) ? Number(x) : x])));
 
-// console.log(await getSheetData());
+export const getSheetData = async () => createFantasticData(await execAPI(process.env.SPREADSHEET_ID, 'data'));

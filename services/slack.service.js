@@ -64,6 +64,8 @@ export const postScheduled = async () => {
     const schedules = await getSheetData();
     console.log(schedules);
 
+    return scheduleAll(schedules);
+
     // const token = process.env.SLACK_API_TOKEN;
     // const schedules = [
     //   {
@@ -100,7 +102,6 @@ export const postScheduled = async () => {
     //     text: 'piyo',
     //   },
     // ];
-    return scheduleAll(schedules);
   } catch (e) {
     throw Error('Error while posting message');
   }
